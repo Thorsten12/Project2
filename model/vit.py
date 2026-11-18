@@ -9,15 +9,15 @@ from .embeddings import PatchEmbedding, PositionalEmbedding
 from .transformer_encoder import Transformer
 
 class VIT(nn.Module):
-    def __init__(self, H, C, P, D):
+    def __init__(self, H, C, P, D, num_heads, mlp_mult):
         super().__init__()
 
-        N              = (H // P) ** 2  # Number of Patches
+        N                   = (H // P) ** 2  # Number of Patches
 
         self.patch_embed    = PatchEmbedding(H=H, C=C, P=P, D=D)
         self.pos_embed      = PositionalEmbedding(N=N, D=D)
 
-        self.transformer    = Transformer(D=D, num_heads=3, mlp_mult=2)
+        self.transformer    = Transformer(D=D, num_heads=num_heads, mlp_mult=mlp_mult)
 
 
 

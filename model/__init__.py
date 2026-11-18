@@ -1,1 +1,1 @@
-from .vit import VIT
+from .model import FullModel
