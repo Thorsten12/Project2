@@ -21,8 +21,8 @@ def train():
     parser.add_argument("--patch_size", default=16, type=int)
     parser.add_argument("--hidden_dim", default=768, type=int)
     parser.add_argument("--num_heads", default=12, type=int)
-    parser.add_argument("--mlp_mult", default=4, type=float)
-    parser.add_argument("--classifier_dim", default=768, type=int)
+    parser.add_argument("--depth", default=6, type=int)
+    parser.add_argument("--mlp_mult", default=4, type=int)
     parser.add_argument("--seed", default=42, type=int)
 
     parser.add_argument("--epochs", default=50, type=int)
@@ -70,7 +70,7 @@ def train():
 
     device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
     
-    model = FullModel(H=H, C=C, P=args.patch_size, D=args.hidden_dim, num_heads=args.num_heads, mlp_mult=args.mlp_mult, classifier_dim=args.classifier_dim).to(device)
+    model = FullModel(H=H, C=C, P=args.patch_size, D=args.hidden_dim, num_heads=args.num_heads, mlp_mult=args.mlp_mult, depth=args.depth).to(device)
 
     criterion = CrossEntropyLoss()
 

@@ -5,20 +5,12 @@ class CrossEntropyLoss(nn.Module):
     def __init__(self):
         super().__init__()
 
-    def forward(self, 
-                logits,     # (B, 10)
-                targets):   # (B,)
-        _exp_all        = torch.exp(logits)
-        _sum            = torch.sum(_exp_all, dim=1, keepdim=True)
-
-        _fracture       = _exp_all / _sum
-        correct_probs = _fracture.gather(1, targets.unsqueeze(1))
-
-        loss_i          = -1 * torch.log(correct_probs)
-
-        loss            = torch.mean(loss_i, dim=0)
-
-        return loss
+    def forward(self, logits, targets):
+        logits = logits.float()
+        shifted = logits - logits.max(dim=1, keepdim=True).values
+        log_probs = shifted - torch.log(torch.exp(shifted).sum(dim=1, keepdim=True))
+        loss_i = -log_probs.gather(1, targets.unsqueeze(1))
+        return loss_i.mean()    
 
 if __name__=="__main__":
     my_loss = CrossEntropyLoss()
